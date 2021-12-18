@@ -31,7 +31,7 @@ kaviṃ kavīnāmupamaśravastamam
 jyeṣṭharājaṃ brahmaṇāṃ brahmaṇaspata 
 āa naḥ śṛṇvannūtibhiḥ sīda sādanam 
 
--What is "agnimile.txt"?
+- What is "agnimile.txt"?
   - The first 3 lines of the rigveda. Includes pitch accent and punctuation, and thus is an example of a text file that can be used with VedicTransliterator.py
 
 - What is "nasadiya.txt"
