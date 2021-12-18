@@ -35,5 +35,5 @@ jyeṣṭharājaṃ brahmaṇāṃ brahmaṇaspata
   - The first 3 lines of the rigveda. Includes pitch accent and punctuation, and thus is an example of a text file that can be used with VedicTransliterator.py
 
 - What is "nasadiya.txt"
-  - The "Hymn of Creation", a famous contemplative hymn in Rigveda (10:129) about the creation of the universe. Does not include pitch accent within the text file nor punctuation, example of a file that can be used with HKandIASTTransliterator.py
+  - The "Hymn of Creation", a famous contemplative hymn in Rigveda (10:129) about the origin of the universe. Does not include pitch accent within the text file nor punctuation, example of a file that can be used with HKandIASTTransliterator.py
   
