@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 
-
+#Returns a transliterated word from a Devanagari word with the dictionary you want to use
 def transliterateWord(word, chart):
     hkword = ''
     length = len(word)
@@ -13,10 +13,12 @@ def transliterateWord(word, chart):
         hCode = str(hex(uCode))
         if(isLetter(uCode)):
             hkLetter = chart.loc[chart.DevanagariCode == hCode, 'HKReal'].values[0]
+            #checks whether the letter is at the end or not
             if(i + 1 < length ):
                 nextCh = word[i + 1]
                 nextUCode = ord(nextCh)
                 nextHCode = str(hex(nextUCode))
+                #Checks the next letter to see if the function should add an inherent vowel or not
                 if(isLetter(nextUCode)):
                     if(isVowel(uCode)):
                         hkword = hkword + hkLetter
@@ -120,6 +122,7 @@ def iastTransliterateWord(word, chart):
             i+=1
     return iastword
 
+#Set of boolean returning functions with the input being the decimal version of the unicode of the letter.
 def isLetter(uCode):
     start = int('0905', 16)
     end = int('093D', 16)
@@ -157,6 +160,7 @@ def isMatra(uCode):
 def isHalant(uCode):
     return uCode == int('094D', 16)
 
+#Uses pandas to create Devanagari to Roman dictionaries from the csv files in ScriptCharts
 def hkCreateMap(filename):
     columnNames = ['DevanagariCode', 'HKReal']
     dict_from_csv = pd.read_csv(filename, header=0, index_col=None, names=columnNames, squeeze=None)
@@ -167,6 +171,7 @@ def iastCreateMap(filename):
     dict_from_csv = pd.read_csv(filename, header=0, index_col=None, names=columnNames, squeeze=None)
     return dict_from_csv
 
+#Void function that uses transliterateWord and iastTransliterateWord to print out each line of output from these functions
 def transliterate(filename):
    inputfile = open(filename, 'r')
    lines = inputfile.readlines()
