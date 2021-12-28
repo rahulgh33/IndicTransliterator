@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 
-
+#Returns a transliterated word from a Devanagari word with the dictionary you want to use
 def iastTransliterateWord(word, chart):
     iastword = ''
     length = len(word)
@@ -13,10 +13,12 @@ def iastTransliterateWord(word, chart):
         iCode = str(hex(uCode))
         if(isLetter(uCode)):
             iastLetter = chart.loc[chart.Devanagari == iCode, 'IAST'].values[0]
+            #checks whether the letter is at the end or not
             if(i + 1 < length ):
                 nextCh = word[i + 1]
                 nextUCode = ord(nextCh)
                 nextICode = str(hex(nextUCode))
+                #Checks the next letter to see if the function should add an inherent vowel or not
                 if(isLetter(nextUCode)):
                     if(isVowel(uCode)):
                         iastword = iastword + iastLetter
@@ -31,11 +33,9 @@ def iastTransliterateWord(word, chart):
                     nextIastLetter = chart.loc[chart.Devanagari == nextICode, 'IAST'].values[0]
                     iastword = iastword + iastLetter + 'a' + nextIastLetter
                     i += 2
-
                 elif(isMatra(nextUCode)):
                     nextIastLetter = chart.loc[chart.Devanagari == nextICode, 'IAST'].values[0]
                     iastword = iastword + iastLetter + nextIastLetter
-                    # i+=2
                     if (i+2 < length):
                         secondNextCh = word[i + 2]
                         secondNextUCode = ord(secondNextCh)
@@ -44,6 +44,7 @@ def iastTransliterateWord(word, chart):
                             secondNextIastLetter = chart.loc[chart.Devanagari == secondNextICode, 'IAST'].values[0]
                             iastword = iastword + secondNextIastLetter
                             i += 2
+                        #Exhaustive check of an accent mark after the letter. If there is an accent, it gets rid of the previous vowel and replaces it with an accented vowel
                         elif (isUdatta(secondNextUCode)):
                             if(isa(nextUCode)):
                                 iastword = iastword[:-1] + 'á'
@@ -232,6 +233,7 @@ def iastTransliterateWord(word, chart):
             i+=1
     return iastword
 
+#Exhaustive set of boolean returning functions with the input being the decimal version of the unicode of the letter
 def isLetter(uCode):
     start = int('0905', 16)
     end = int('093D', 16)
@@ -239,6 +241,7 @@ def isLetter(uCode):
         return True
     else:
         return False
+
 def isOm(uCode):
     return uCode == int('0950', 16)
 
@@ -311,6 +314,7 @@ def isr(uCode):
 
 def isl(uCode):
     return uCode == int('090c', 16) or uCode == int('0962', 16)
+
 def isConsonant(uCode):
     start = int('0915', 16)
     end = int('093D', 16)
@@ -328,11 +332,13 @@ def isUdatta(uCode):
 def isAnudatta(uCode):
     return uCode == int('0952', 16)
 
+#Uses pandas to create Devanagari to Roman dictionaries from the csv files in ScriptCharts
 def iastCreateMap(filename):
     columnNames = ['Devanagari', 'IAST']
     dict_from_csv = pd.read_csv(filename, header=0, index_col=None, names=columnNames, squeeze=None)
     return dict_from_csv
 
+#Void function that uses transliterateWord to print out each line of output from these functions
 def transliterate(filename):
    inputfile = open(filename, 'r')
    lines = inputfile.readlines()
